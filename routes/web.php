@@ -1,28 +1,28 @@
 <?php
 
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\SessionController;
-use App\Http\Controllers\StudentController;
-use App\Http\Controllers\TeacherController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StudentController;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/students', function(){
+  return view('student.index');
 });
 
-Route::post('/course', [CourseController::class, 'store']);
-Route::post('/session', [SessionController::class, 'store']);
-Route::post('/teacher', [TeacherController::class, 'store']);
-Route::post('/student', [StudentController::class, 'store']);
+// Маршрут для создания студента
+Route::post('/student/create', [StudentController::class, 'StudentCreate'])->name('student.create');
+
+// Маршрут для получения всех студентов
+Route::get('/student/all', [StudentController::class, 'StudentRetrieveAll'])->name('student.all');
+
+// Маршрут для получения одного студента по ID
+Route::get('/student/{id}', [StudentController::class, 'StudentRetrieve'])->name('student.retrieve');
+
+// Маршрут для обновления студента
+Route::post('/student/{id}/update', [StudentController::class, 'StudentUpdate'])->name('student.update');
+
+// Маршрут для удаления одного студента
+Route::delete('/student/{id}', [StudentController::class, 'StudentDelete'])->name('student.delete');
+
+// Маршрут для удаления нескольких студентов
+Route::post('/student/delete-many', [StudentController::class, 'StudentDeleteMany'])->name('student.deleteMany');
+
+
