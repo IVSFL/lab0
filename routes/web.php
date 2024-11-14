@@ -11,11 +11,11 @@ Route::post('/student/create', [StudentController::class, 'StudentCreate'])->nam
 
 Route::get('/student/all', [StudentController::class, 'StudentRetrieveAll'])->name('student.all');
 
-Route::get('/student/{id}', [StudentController::class, 'StudentRetrieve'])->name('student.retrieve');
+Route::get('/student/retrieve/{id}', [StudentController::class, 'StudentRetrieve'])->name('student.retrieve');
 
-Route::post('/student/{id}/update', [StudentController::class, 'StudentUpdate'])->name('student.update');
+Route::post('/student/update/{id}', [StudentController::class, 'StudentUpdate'])->name('student.update');
 
-Route::delete('/student/{id}', [StudentController::class, 'StudentDelete'])->name('student.delete');
+Route::delete('/student/delete/{id}', [StudentController::class, 'StudentDelete'])->name('student.delete');
 
 Route::post('/student/delete-many', [StudentController::class, 'StudentDeleteMany'])->name('student.deleteMany');
 
