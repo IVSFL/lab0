@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
-
+use App\Http\Requests\CreateStudentRequest;
 class StudentController extends Controller
 {
     /**
@@ -12,12 +12,15 @@ class StudentController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function StudentCreate(Request $request) {
+    public function StudentCreate(CreateStudentRequest $request) {
+      dd($request);
       $student = Student::create([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),
         'phone_number'=>$request->input('phone_number')
       ]);
+
+      
 
       return response()->json($student, 201);
     }

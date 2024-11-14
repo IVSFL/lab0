@@ -12,11 +12,21 @@
     <h2>Создать студента</h2>
     <form id="createStudentForm">
         <label for="name">Имя</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text"
+         id="name" 
+         name="name" 
+         pattern="[A-Za-zА-Яа-яЁё\s.-',()]{2,}"
+         title="Поле не должно быть пустым, не должны присутствовать цифры, и состоять только из пробелов"
+         required>
         <label for="email">Электронная почта</label>
         <input type="email" id="email" name="email" required>
         <label for="phone_number">Номер телефона</label>
-        <input type="text" id="phone_number" name="phone_number" required>
+        <input type="tel"
+            id="phone_number"
+            name="phone_number"
+            pattern="8[0-9]{10}" 
+            title="Номер телефона введен не верно. Должен начинатся с 8, и состоять из 11 цифр"
+            required>
         <button type="submit">Создать</button>
     </form>
 
@@ -30,7 +40,6 @@
         <thead>
             <tr>
                 <th><input type="checkbox" id="selectAll" /> Выбрать всех</th>
-                <th>id</th>
                 <th>Имя</th>
                 <th>Эл. почта</th>
                 <th>Номер телефона</th>
@@ -43,18 +52,28 @@
     <h2>Обновить данные</h2>
     <form id="updateStudentForm" style="display: none;">
         <input type="hidden" id="updateStudentId">
-        <label for="updateName">Name:</label>
-        <input type="text" id="updateName" name="name" required>
-        <label for="updateEmail">Email:</label>
+        <label for="updateName">Имя</label>
+        <input type="text"
+         id="updateName"
+         name="name"
+         pattern="[A-Za-zА-Яа-яЁё\s.-',()]{2,}"
+         title="Поле не должно быть пустым, не должны присутствовать цифры, и состоять только из пробелов"
+         required>
+        <label for="updateEmail">Эл почта</label>
         <input type="email" id="updateEmail" name="email" required>
-        <label for="updatePhoneNumber">Phone Number:</label>
-        <input type="text" id="updatePhoneNumber" name="phone_number" required>
-        <button type="submit">Update Student</button>
+        <label for="updatePhoneNumber">Номер телефона</label>
+        <input type="text" 
+         id="updatePhoneNumber" 
+         name="phone_number" 
+         pattern="8[0-9]{10}" 
+         title="Номер телефона введен не верно. Должен начинатся с 8, и состоять из 11 цифр"
+         required>
+        <button type="submit">Обновить</button>
     </form>
 
     <script>
         $(document).ready(function() {
-            // Обработка формы создания студента
+            // создания студента
             $('#createStudentForm').submit(function(e) {
                 e.preventDefault();
 
@@ -78,17 +97,19 @@
                 });
             });
 
-            // Загрузка всех студентов
+            // загрузка всех студентов
             function loadStudents() {
                 $.ajax({
                     url: '/student/all',
                     type: 'GET',
                     success: function(data) {
+                        data.sort(function(a, b){
+                            return a.name.localeCompare(b.name, 'en', {sensitivity: 'base'}) || a.name.localeCompare(b.name, 'ru', {sensitivity: 'base'});
+                        });
                         let rows = '';
                         data.forEach(function(student) {
                             rows += `<tr>
                                 <td><input type="checkbox" class="selectStudent" data-id="${student.id}" /></td>
-                                <td>${student.id}</td>
                                 <td>${student.name}</td>
                                 <td>${student.email}</td>
                                 <td>${student.phone_number}</td>
@@ -106,7 +127,7 @@
                 });
             }
 
-            // Функция редактирования студента
+            // редактирования студента
             window.editStudent = function(id) {
                 $.ajax({
                     url: `/student/${id}`,
@@ -124,7 +145,7 @@
                 });
             }
 
-            // Обработка формы обновления студента
+            // обновления студента
             $('#updateStudentForm').submit(function(e) {
                 e.preventDefault();
 
@@ -144,12 +165,12 @@
                         $('#updateStudentForm').hide();
                     },
                     error: function() {
-                        alert('Ошибка обновления');
+                        alert('Неверное поле имени');
                     }
                 });
             });
 
-            // Функция удаления студента
+            // удаление студента
             window.deleteStudent = function(id) {
                 if (confirm('Уверены что хотите удалить?')) {
                     $.ajax({
@@ -169,7 +190,7 @@
                 }
             }
 
-            // Функция удаления выбранных студентов
+            // удаление выбранных студентов
             $('#deleteSelectedStudents').click(function() {
                 let selectedIds = [];
                 $('.selectStudent:checked').each(function() {
@@ -199,14 +220,18 @@
                 }
             });
 
-            // Обработчик для выбора/отмены выбора всех студентов
+            // выбор студентов
             $('#selectAll').click(function() {
                 let checked = $(this).prop('checked');
                 $('.selectStudent').prop('checked', checked);
             });
 
-            // Загрузка студентов при нажатии кнопки "Load Students"
+            // зашрузка студентов по нажатью кнопки
             $('#loadStudents').click(function() {
+                loadStudents();
+            });
+
+            $(document).ready(function(){
                 loadStudents();
             });
         });
