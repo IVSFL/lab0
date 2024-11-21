@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Http\Requests\CreateStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 class StudentController extends Controller
 {
     /**
@@ -13,7 +14,8 @@ class StudentController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function StudentCreate(CreateStudentRequest $request) {
-      dd($request);
+      //return response()->json(['message' => 'Запрос получен']);
+      //dd($request);
       $student = Student::create([
         'name'=>$request->input('name'),
         'email'=>$request->input('email'),
@@ -53,7 +55,7 @@ class StudentController extends Controller
        * @return \Illuminate\Http\JsonResponse
        */
 
-       public function StudentUpdate(Request $request, $id) {
+       public function StudentUpdate(UpdateStudentRequest $request, $id) {
         $student = Student::findOrFail($id);
         $student->update([
           'name'=>$request->input('name'),
