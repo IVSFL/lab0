@@ -24,7 +24,7 @@ class UpdateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|min:5|regex:/^[A-Za-zА-Яа-я\s\.\-\',\(\)]+$/u',
+            'name' => 'required|max:255|min:5|regex:/^(?![\s\.\-\',\(\)]+$)[A-Za-zА-Яа-я\s\.\-\',\(\)]+$/u',
             'email' => 'required|email',
             'phone_number' => 'required|min:11|max:11|starts_with:8'
         ];
