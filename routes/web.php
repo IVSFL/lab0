@@ -2,9 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\lab2\StudentSearchController;
 
 Route::get('/students', function(){
   return view('student.index');
+});
+
+Route::get('student_search', function() {
+  return view('student_search.index');
 });
 
 Route::post('/student/create', [StudentController::class, 'StudentCreate'])->name('student.create');
@@ -19,4 +24,4 @@ Route::delete('/student/delete/{id}', [StudentController::class, 'StudentDelete'
 
 Route::post('/student/delete-many', [StudentController::class, 'StudentDeleteMany'])->name('student.deleteMany');
 
-
+Route::get('search_student/search', [StudentSearchController::class, 'studentSearch']);
