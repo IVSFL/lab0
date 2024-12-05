@@ -27,7 +27,7 @@ class CreateStudentsTable extends Migration
 
         DB::statement("ALTER TABLE teacher ADD CONSTRAINT valid_student_name CHECK (TRIM(name) <> '')");
    
-        DB::statement("ALTER TABLE student ADD CONSTRAINT valid_student_phone CHECK (phone_number ~* '^\\+?[0-9]{10,15}$')");
+        DB::statement("ALTER TABLE student ADD CONSTRAINT valid_student_phone CHECK (phone_number ~* '^[0-9]{10,15}$')");
     }
 
     /**

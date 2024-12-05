@@ -8,7 +8,7 @@ Route::get('/students', function(){
   return view('student.index');
 });
 
-Route::get('student_search', function() {
+Route::get('/student_search', function() {
   return view('student_search.index');
 });
 
@@ -24,4 +24,4 @@ Route::delete('/student/delete/{id}', [StudentController::class, 'StudentDelete'
 
 Route::post('/student/delete-many', [StudentController::class, 'StudentDeleteMany'])->name('student.deleteMany');
 
-Route::get('search_student/search', [StudentSearchController::class, 'studentSearch']);
+Route::get('/student_search/search', [StudentSearchController::class, 'studentSearch']);

@@ -16,7 +16,7 @@
         <label for="email">Почта</label>
         <input type="email" name="filters[email]" id="email">
         <label for="phone">Номер телефона</label>
-        <input type="tel" name="filters[phone]" id="phone">
+        <input type="tel" name="filters[phone_number]" id="phone">
         <label for="limit">Лимит результатов</label>
         <input type="number" name="limit" id="limit" value="5">
         <label for="offset">Смещение</label>
@@ -29,6 +29,74 @@
 
     <div id="pagination"></div>
 
+    <script>
+        $('#searchButton').on('click', function (event) {
+          event.preventDefault();
+          const phoneField = $('#phone');
+          const phone = phoneField.val().replace(/\D/g, '');
+          phoneField.val(phone);
+
+          performSearch();
+        });
+
+        function performSearch() {
+            const formData = $('#searchForm').serialize();
+
+            $.ajax({
+                url: `/student_search/search?${formData}`,
+                method: 'GET',
+                success: function (response) {
+                    displayResults(response.data);
+                    displayPagination(response);
+                },
+                error: function () {
+                    $('#results').text('Ошибка поиска');
+                }
+            });
+        }
+
+        function displayResults(data) {
+            $('#results').empty();
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const div = $('<div>').text(JSON.stringify(item));
+                    $('#results').append(div);
+                });
+            } else {
+                $('#results').text('Нет результатов');
+            }
+        }
+
+        function displayPagination(meta) {
+    $('#pagination').empty();
+
+    const total = meta.total;
+    const limit = meta.limit;
+    const currentOffset = meta.offset;
+
+    const totalPages = Math.ceil(total / limit);
+    const currentPage = Math.floor(currentOffset / limit) + 1;
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageOffset = (i - 1) * limit;
+
+        // Создание кнопки для страницы
+        const pageButton = $('<button>')
+            .text(i)
+            .on('click', function () {
+                $('#offset').val(pageOffset);
+                performSearch();
+            });
+
+        // Выделение текущей страницы жирным
+        if (i === currentPage) {
+            pageButton.css('font-weight', 'bold');
+        }
+
+        $('#pagination').append(pageButton);
+    }
+}
+    </script>
         
 </body>
 </html>
