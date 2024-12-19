@@ -20,14 +20,6 @@ class CreateStudentsTable extends Migration
             $table->string('email', 255)->unique()->nullable();
             $table->string('phone_number', 11)->nullable(false);
         });
-
-        DB::statement("CREATE UNIQUE INDEX unique_student_email_trimmed ON student (LOWER(TRIM(email)))");
-
-        DB::statement("ALTER TABLE teacher ADD CONSTRAINT valid_student_email CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]{2,}$')");
-
-        DB::statement("ALTER TABLE teacher ADD CONSTRAINT valid_student_name CHECK (TRIM(name) <> '')");
-   
-        DB::statement("ALTER TABLE student ADD CONSTRAINT valid_student_phone CHECK (phone_number ~* '^[0-9]{10,15}$')");
     }
 
     /**
